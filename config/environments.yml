@@ -1,0 +1,201 @@
+# Multi-Environment Configuration Matrix
+# Exercice 6 - Senior Level
+
+environments:
+  dev:
+    description: "Development environment for local testing"
+    deployment_strategy: "direct"
+    resources:
+      app:
+        replicas: 1
+        cpu_limit: "0.5"
+        memory_limit: "512M"
+        cpu_request: "0.1"
+        memory_request: "128M"
+      db:
+        cpu_limit: "1"
+        memory_limit: "1G"
+    features:
+      hot_reload: true
+      debug_mode: true
+      profiling: true
+      mock_external_apis: true
+    health_checks:
+      startup_period: 10s
+      liveness_interval: 30s
+      readiness_interval: 10s
+      failure_threshold: 3
+    monitoring:
+      metrics_enabled: true
+      tracing_enabled: false
+      log_level: "debug"
+    database:
+      pool_size: 5
+      connection_timeout: 5s
+    backup:
+      enabled: false
+
+  staging:
+    description: "Staging environment for pre-production testing"
+    deployment_strategy: "blue_green"
+    traffic_split:
+      blue: 90
+      green: 10
+    resources:
+      app:
+        replicas: 2
+        cpu_limit: "1"
+        memory_limit: "1G"
+        cpu_request: "0.5"
+        memory_request: "512M"
+      db:
+        cpu_limit: "2"
+        memory_limit: "2G"
+    features:
+      hot_reload: false
+      debug_mode: false
+      profiling: true
+      mock_external_apis: false
+    health_checks:
+      startup_period: 30s
+      liveness_interval: 20s
+      readiness_interval: 10s
+      failure_threshold: 3
+    monitoring:
+      metrics_enabled: true
+      tracing_enabled: true
+      log_level: "info"
+    database:
+      pool_size: 20
+      connection_timeout: 10s
+    backup:
+      enabled: true
+      schedule: "0 2 * * *"  # Daily at 2 AM
+      retention_days: 7
+
+  prod:
+    description: "Production environment"
+    deployment_strategy: "canary"
+    canary_steps:
+      - percentage: 5
+        duration: 5m
+      - percentage: 25
+        duration: 10m
+      - percentage: 50
+        duration: 15m
+      - percentage: 100
+    resources:
+      app:
+        replicas: 3
+        cpu_limit: "2"
+        memory_limit: "2G"
+        cpu_request: "1"
+        memory_request: "1G"
+      db:
+        cpu_limit: "4"
+        memory_limit: "4G"
+    features:
+      hot_reload: false
+      debug_mode: false
+      profiling: false
+      mock_external_apis: false
+    health_checks:
+      startup_period: 60s
+      liveness_interval: 10s
+      readiness_interval: 5s
+      failure_threshold: 2
+    monitoring:
+      metrics_enabled: true
+      tracing_enabled: true
+      log_level: "warn"
+    database:
+      pool_size: 50
+      connection_timeout: 30s
+    backup:
+      enabled: true
+      schedule: "0 */6 * * *"  # Every 6 hours
+      retention_days: 30
+    slo:
+      availability: 99.9
+      latency_p95_ms: 200
+      latency_p99_ms: 500
+      error_rate_percent: 0.1
+
+# Feature Flags per environment
+feature_flags:
+  new_ui:
+    dev: true
+    staging: true
+    prod: false
+  beta_api:
+    dev: true
+    staging: true
+    prod: false
+  advanced_analytics:
+    dev: true
+    staging: false
+    prod: false
+  rate_limiting:
+    dev: false
+    staging: true
+    prod: true
+  caching:
+    dev: false
+    staging: true
+    prod: true
+
+# Security settings per environment
+security:
+  dev:
+    tls_enabled: false
+    cors_origins: "*"
+    rate_limit: 1000
+    session_timeout: 24h
+  staging:
+    tls_enabled: true
+    cors_origins: "https://staging.example.com"
+    rate_limit: 500
+    session_timeout: 8h
+  prod:
+    tls_enabled: true
+    cors_origins: "https://example.com,https://www.example.com"
+    rate_limit: 100
+    session_timeout: 2h
+
+# Alerting thresholds per environment
+alerting:
+  dev:
+    error_rate_threshold: 10
+    latency_p99_threshold_ms: 5000
+    cpu_threshold_percent: 90
+    memory_threshold_percent: 90
+  staging:
+    error_rate_threshold: 5
+    latency_p99_threshold_ms: 2000
+    cpu_threshold_percent: 80
+    memory_threshold_percent: 85
+  prod:
+    error_rate_threshold: 1
+    latency_p99_threshold_ms: 1000
+    cpu_threshold_percent: 70
+    memory_threshold_percent: 80
+
+# Promotion workflow
+promotion:
+  dev_to_staging:
+    required_checks:
+      - unit_tests_pass
+      - integration_tests_pass
+      - security_scan_pass
+      - code_review_approved
+    auto_promote: false
+  staging_to_prod:
+    required_checks:
+      - smoke_tests_pass
+      - load_tests_pass
+      - security_audit_pass
+      - change_approval
+      - backup_verified
+    auto_promote: false
+    rollback_on_error: true
+    monitoring_period: 1h

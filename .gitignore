@@ -1,0 +1,142 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Secrets and credentials
+secrets/
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Deployment artifacts
+deploy/releases/*/
+deploy/current
+*.tar.gz
+*.zip
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn.lock
+package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+
+# Ruby
+*.gem
+*.rbc
+.bundle/
+vendor/bundle/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.cache
+
+# Monitoring data
+prometheus_data/
+grafana_data/
+loki_data/
+
+# Database data
+postgres_data/
+mysql_data/
+redis_data/
+
+# Test coverage
+coverage/
+.coverage
+htmlcov/
+.nyc_output/
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Backup files
+*.backup
+*.old
+*.orig
+
+# Security scan results
+trivy-results.json
+security-report.html
+
+# CI/CD artifacts
+.github/workflows/*.log
