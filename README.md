@@ -165,3 +165,18 @@ Si vous avez du temps supplémentaire :
 ### Exercice 9 — Incident Response
 - Post-mortem d'incident (scénario fourni dans `incidents/scenario.md`)
 - Runbooks opérationnels
+
+## 📞 Support Technique
+
+En cas de blocage :
+- Documenter le problème dans votre README
+- Proposer une solution alternative
+- Continuer sur les autres exercices
+
+**La capacité à gérer les imprévus fait partie de l'évaluation.**
+
+---
+
+**Bonne chance ! 🚀**
+
+*Ce test évalue votre capacité à livrer rapidement une infrastructure fonctionnelle tout en démontrant une vision stratégique.*
