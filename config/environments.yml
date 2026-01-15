@@ -1,5 +1,5 @@
 # Multi-Environment Configuration Matrix
-# Exercice 6 - Senior Level
+# Exercice 6 
 
 environments:
   dev:
